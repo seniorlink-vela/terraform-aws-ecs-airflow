@@ -71,8 +71,6 @@ data "aws_iam_policy_document" "task_execution_permissions" {
 }
 
 data "aws_iam_policy_document" "ecs_exec" {
-  count = var.enable_ecs_execute_command ? 1 : 0
-
   # This policy is required to allow use of the ecs-exec command, to execute
   # commands on running fargate tasks - similar to `docker exec` functionality
   # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html
