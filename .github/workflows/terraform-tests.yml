@@ -25,6 +25,9 @@ jobs:
 
       - name: Terraform Format
         run: terraform fmt -check
+      - name: Explain Format Error
+        if: ${{ failure() }}
+        run: echo "Terraform format needs to be run.  (fmt failure may not report specific issues)"
 
       - name: Terraform Validate
         run: terraform validate
