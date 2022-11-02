@@ -71,7 +71,7 @@ resource "aws_s3_bucket_object" "airflow_init_entrypoint" {
     RBAC_LASTNAME   = var.rbac_admin_lastname,
     RBAC_PASSWORD   = var.rbac_admin_password,
     AIRFLOW_VERSION = var.airflow_image_tag,
-    AIRFLOW_HOME = var.airflow_container_home
+    AIRFLOW_HOME    = var.airflow_container_home
   })
 }
 
