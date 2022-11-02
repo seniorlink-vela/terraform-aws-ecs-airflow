@@ -18,13 +18,16 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.4
+          terraform_version: 1.1.8
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Format
         run: terraform fmt -check
+      - name: Explain Format Error
+        if: ${{ failure() }}
+        run: echo "Terraform format needs to be run.  (fmt failure may not report specific issues)"
 
       - name: Terraform Validate
         run: terraform validate
@@ -57,7 +60,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.4
+          terraform_version: 1.1.8
 
       - name: "go test"
         run: |

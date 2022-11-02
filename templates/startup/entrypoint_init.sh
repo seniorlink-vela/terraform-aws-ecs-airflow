@@ -6,7 +6,7 @@ airflow_major_version=$(echo ${AIRFLOW_VERSION} | awk -F. '{ print $1 }')
 # Intall python packages through req.txt and pip (if exists)
 if [[ -f "${AIRFLOW_HOME}/startup/requirements.txt" ]]; then
     echo "requirements.txt provided, installing it with pip"
-    python -m pip install -r ${AIRFLOW_HOME}/startup/requirements.txt --user
+    python -m pip install -r ${AIRFLOW_HOME}/startup/requirements.txt --user --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.4.1/constraints-3.7.txt"
 fi
 
 # airflow

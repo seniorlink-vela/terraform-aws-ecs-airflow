@@ -212,11 +212,11 @@ resource "aws_ecs_task_definition" "airflow" {
 resource "aws_ecs_service" "airflow" {
   depends_on = [aws_lb.airflow, aws_db_instance.airflow]
 
-  name            = "${var.resource_prefix}-airflow-${var.resource_suffix}"
-  cluster         = aws_ecs_cluster.airflow.id
-  task_definition = aws_ecs_task_definition.airflow.id
-  desired_count   = 1
-  enable_execute_command = true
+  name                              = "${var.resource_prefix}-airflow-${var.resource_suffix}"
+  cluster                           = aws_ecs_cluster.airflow.id
+  task_definition                   = aws_ecs_task_definition.airflow.id
+  desired_count                     = 1
+  enable_execute_command            = true
   health_check_grace_period_seconds = 120
 
   network_configuration {
