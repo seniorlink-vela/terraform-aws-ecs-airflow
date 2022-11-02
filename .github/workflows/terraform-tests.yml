@@ -18,7 +18,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.4
+          terraform_version: 1.1.8
 
       - name: Terraform Init
         run: terraform init
@@ -57,7 +57,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.15.4
+          terraform_version: 1.1.8
 
       - name: "go test"
         run: |
