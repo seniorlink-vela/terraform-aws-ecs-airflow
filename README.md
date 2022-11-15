@@ -7,6 +7,8 @@
 
 ![](https://scontent.fbru1-1.fna.fbcdn.net/v/t1.0-9/94305647_112517570431823_3318660558911176704_o.png?_nc_cat=111&_nc_sid=e3f864&_nc_ohc=-spbrtnzSpQAX_qi7iI&_nc_ht=scontent.fbru1-1.fna&oh=483d147a29972c72dfb588b91d57ac3c&oe=5F99368A "Logo")
 
+### DEPRECATED: We are no longer actively maintaining this module, instead we recommend that you look into [AWS MWAA](https://aws.amazon.com/managed-workflows-for-apache-airflow/) as a replacement.
+
 # Terraform module Airflow on AWS ECS
 
 This is a module for Terraform that deploys Airflow in AWS.
@@ -114,12 +116,16 @@ For now the only authentication option is 'RBAC'. When enabling this, this modul
 | rbac\_admin\_lastname | RBAC Lastname (only when airflow\_authentication = 'rbac') | `string` | `"airflow"` | no |
 | rbac\_admin\_password | RBAC Password (only when airflow\_authentication = 'rbac') | `string` | `"admin"` | no |
 | rbac\_admin\_username | RBAC Username (only when airflow\_authentication = 'rbac') | `string` | `"admin"` | no |
+| rds\_allocated\_storage | The allocated storage for the rds db in gibibytes | `number` | `20` | no |
 | rds\_availability\_zone | Availability zone for the rds instance | `string` | `"eu-west-1a"` | no |
 | rds\_deletion\_protection | Deletion protection for the rds instance | `bool` | `false` | no |
+| rds\_engine | The database engine to use. For supported values, see the Engine parameter in [API action CreateDBInstance](https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_CreateDBInstance.html) | `string` | `"postgres"` | no |
 | rds\_instance\_class | The class of instance you want to give to your rds db | `string` | `"db.t2.micro"` | no |
 | rds\_password | Password of rds | `string` | `""` | no |
 | rds\_skip\_final\_snapshot | Whether or not to skip the final snapshot before deleting (mainly for tests) | `bool` | `false` | no |
+| rds\_storage\_type | One of `"standard"` (magnetic), `"gp2"` (general purpose SSD), or `"io1"` (provisioned IOPS SSD) | `string` | `"standard"` | no |
 | rds\_username | Username of rds | `string` | `"airflow"` | no |
+| rds\_version | The DB version to use for the RDS instance | `string` | `"12.7"` | no |
 | region | The region to deploy your solution to | `string` | `"eu-west-1"` | no |
 | resource\_prefix | A prefix for the create resources, example your company name (be aware of the resource name length) | `string` | n/a | yes |
 | resource\_suffix | A suffix for the created resources, example the environment for airflow to run in (be aware of the resource name length) | `string` | n/a | yes |
