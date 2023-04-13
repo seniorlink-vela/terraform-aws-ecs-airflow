@@ -27,6 +27,7 @@ locals {
   airflow_log_region               = var.airflow_log_region != "" ? var.airflow_log_region : var.region
   airflow_webserver_container_name = "${var.resource_prefix}-airflow-webserver-${var.resource_suffix}"
   airflow_scheduler_container_name = "${var.resource_prefix}-airflow-scheduler-${var.resource_suffix}"
+  airflow_triggerer_container_name = "${var.resource_prefix}-airflow-triggerer-${var.resource_suffix}"
   airflow_sidecar_container_name   = "${var.resource_prefix}-airflow-sidecar-${var.resource_suffix}"
   airflow_init_container_name      = "${var.resource_prefix}-airflow-init-${var.resource_suffix}"
   airflow_volume_name              = "airflow"

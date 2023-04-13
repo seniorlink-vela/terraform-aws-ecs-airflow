@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "airflow" {
         "image": "mikesir87/aws-cli",
         "name": "${local.airflow_sidecar_container_name}",
         "command": [
-            "/bin/bash -c \"aws s3 cp s3://${local.s3_bucket_name}/${local.s3_key} ${var.airflow_container_home} --recursive && chmod +x ${var.airflow_container_home}/${aws_s3_bucket_object.airflow_scheduler_entrypoint.key} && chmod +x ${var.airflow_container_home}/${aws_s3_bucket_object.airflow_webserver_entrypoint.key} && chmod -R 777 ${var.airflow_container_home}\""
+            "/bin/bash -c \"aws s3 cp s3://${local.s3_bucket_name}/${local.s3_key} ${var.airflow_container_home} --recursive && chmod +x ${var.airflow_container_home}/${aws_s3_bucket_object.airflow_scheduler_entrypoint.key} && chmod +x ${var.airflow_container_home}/${aws_s3_bucket_object.airflow_triggerer_entrypoint.key} && chmod +x ${var.airflow_container_home}/${aws_s3_bucket_object.airflow_webserver_entrypoint.key} && chmod -R 777 ${var.airflow_container_home}\""
         ],
         "entryPoint": [
             "sh",
@@ -111,6 +111,49 @@ resource "aws_ecs_task_definition" "airflow" {
         ],
         "command": [
             "/bin/bash -c \"${var.airflow_container_home}/${aws_s3_bucket_object.airflow_scheduler_entrypoint.key}\""
+        ],
+        "entryPoint": [
+            "sh",
+            "-c"
+        ],
+        "environment": [
+          ${join(",\n", formatlist("{\"name\":\"%s\",\"value\":\"%s\"}", keys(local.airflow_variables), values(local.airflow_variables)))}
+        ],
+        "secrets": [{
+          "name": "AIRFLOW__CORE__FERNET_KEY",
+          "valueFrom": "arn:aws:ssm:${var.region}:${data.aws_caller_identity.this.account_id}:parameter/${var.resource_suffix}/airflow/fernet_key"
+        }],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${aws_cloudwatch_log_group.airflow.name}",
+            "awslogs-region": "${local.airflow_log_region}",
+            "awslogs-stream-prefix": "airflow"
+          }
+        },
+        "essential": true,
+        "mountPoints": [
+          {
+            "sourceVolume": "${local.airflow_volume_name}",
+            "containerPath": "${var.airflow_container_home}"
+          }
+        ]
+      },
+      {
+        "image": "${var.airflow_image_name}:${var.airflow_image_tag}",
+        "name": "${local.airflow_triggerer_container_name}",
+        "dependsOn": [
+            {
+                "containerName": "${local.airflow_sidecar_container_name}",
+                "condition": "SUCCESS"
+            },
+            {
+                "containerName": "${local.airflow_init_container_name}",
+                "condition": "SUCCESS"
+            }
+        ],
+        "command": [
+            "/bin/bash -c \"${var.airflow_container_home}/${aws_s3_bucket_object.airflow_triggerer_entrypoint.key}\""
         ],
         "entryPoint": [
             "sh",
