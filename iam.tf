@@ -68,6 +68,32 @@ data "aws_iam_policy_document" "task_execution_permissions" {
       "ssm:GetParameter"
     ]
   }
+  statement {
+    sid    = "ECRReadAccess"
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:ListImages",
+      "ecr:DescribeImages",
+      "ecr:DescribeRepositories",
+      "ecr:GetRepositoryPolicy",
+      "ecr:GetAuthorizationToken"
+    ]
+
+    resources = ["arn:aws:ecr:us-east-1:852486667247:repository/careforth/airflow"]
+  }
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetAuthorizationToken"
+    ]
+
+    resources = ["*"]
+  }
 }
 
 data "aws_iam_policy_document" "ecs_exec" {
