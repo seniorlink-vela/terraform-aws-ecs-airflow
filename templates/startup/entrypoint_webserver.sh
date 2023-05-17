@@ -9,6 +9,7 @@ python -m pip install awscli --user
 if [[ -f "${AIRFLOW_HOME}/startup/requirements.txt" ]]; then
     echo "requirements.txt provided, installing it with pip"
     python -m pip install -r ${AIRFLOW_HOME}/startup/requirements.txt --user
+    python -m pip install -e /usr/local/lib/dh-common/ --user
 fi
 
 export AIRFLOW__WEBSERVER__SECRET_KEY=$(openssl rand -hex 30)
